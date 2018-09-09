@@ -1,3 +1,4 @@
+
 <template>
     <center>
         <el-form>
@@ -6,6 +7,9 @@
             </el-form-item>
             <el-form-item label="password" prop="password">
                 <el-input type="password" v-model="form.password"></el-input>
+            </el-form-item>
+            <el-form-item label="confirmPassword" prop="confirmPassword">
+                <el-input type="password" v-model="form.confirmPassword"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button @click="login" type="primary">
@@ -21,13 +25,14 @@ export default {
         return {
             form:{
                 email: '',
-                password: ''
+                password: '',
+                confirmPassword: ''
             }
         }
     },
     methods:{
         login() {
-            this.axios.post(`/login`,{...this.form}).then(res=>{
+            this.axios.post(`/register`,{...this.form}).then(res=>{
                 console.log(res)
             })
         }
