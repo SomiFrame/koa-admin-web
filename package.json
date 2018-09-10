@@ -8,6 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "aws-sdk": "^2.311.0",
+    "js-cookie": "^2.2.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1"
   },
@@ -17,6 +19,8 @@
     "@vue/cli-service": "^3.0.1",
     "axios": "^0.18.0",
     "element-ui": "^2.4.6",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.1.0",
     "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.5.17"
   },

@@ -1,4 +1,3 @@
-
 <template>
     <center>
         <el-form>
@@ -34,6 +33,12 @@ export default {
         login() {
             this.axios.post(`/register`,{...this.form}).then(res=>{
                 console.log(res)
+                const {status,message} = res.data
+                if(!status) {
+                    this.$message.success(message)
+                }else {
+                    this.$message.error(message)
+                }
             })
         }
     }

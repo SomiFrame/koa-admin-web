@@ -16,6 +16,7 @@
     </center>
 </template>
 <script>
+import jsCookie from "js-cookie"
 export default {
     data() {
         return {
@@ -29,6 +30,14 @@ export default {
         login() {
             this.axios.post(`/login`,{...this.form}).then(res=>{
                 console.log(res)
+                const {status,message,data} = res.data
+                if(status) {
+                    this.$message.error(message)
+                }else {
+                    jsCookie.set('token',data.token)
+                    this.$message.success(message)
+                    this.$router.push('/')
+                }
             })
         }
     }

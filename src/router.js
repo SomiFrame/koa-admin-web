@@ -4,6 +4,9 @@ import Layout from '@page/Layout.vue'
 import Home from '@page/Home.vue'
 import Login from '@page/Login.vue'
 import Register from '@page/Register.vue'
+import Video from '@page/video'
+import VideoList from '@page/video/list.vue'
+import VideoAdd from '@page/video/add.vue'
 
 Vue.use(Router)
 
@@ -17,17 +20,32 @@ export default new Router({
         component: Layout,
         children: [
             {
-                path:'/',
+                path:'',
                 name: 'home',
                 component: Home
             },
             {
-                path: '/about',
+                path: 'about',
                 name: 'about',
                 // route level code-splitting
                 // this generates a separate chunk (about.[hash].js) for this route
                 // which is lazy-loaded when the route is visited.
                 component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+            },
+            {
+                path:'video',
+                name: 'video',
+                component: Video,
+                children: [
+                    {
+                        path: 'list',
+                        component: VideoList
+                    },
+                    {
+                        path: 'add',
+                        component: VideoAdd
+                    }
+                ]
             }
         ]
     },
