@@ -9,9 +9,7 @@ instance.interceptors.request.use(config=>{
     const token = jsCookie.get('token')
     console.log(config.headers)
     if(token) {
-        config.headers.Authorization = token
-        config.headers.alg = "HS256"
-        config.headers.typ = "JWT"
+        config.headers.Authorization = `Bearer ${token}`
     }
     return config
 },err=>{

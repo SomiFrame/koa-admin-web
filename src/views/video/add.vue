@@ -1,10 +1,10 @@
 <template>
     <el-form :model="form">
         <el-form-item label="title:">
-            <el-input v-model="title"></el-input>
+            <el-input v-model="form.title"></el-input>
         </el-form-item>
         <el-form-item label="description:">
-            <el-input type="textarea" v-model="description"></el-input>
+            <el-input type="textarea" v-model="form.description"></el-input>
         </el-form-item>
         <el-form-item label="thumbnail:">
             <div class="imgUploadContainer">
@@ -37,8 +37,8 @@ export default {
             imgPrecent: 0,
             videoUploading: false,
             videoPrecent: 0,
-            accessKeyId: 'AKIAIK7PWCM6F6WZKYCQ',
-            secretAccessKey: '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'
+            accessKeyId: 'AKIAIICLIZVMXPX5BZDA',
+            secretAccessKey: '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'
         }
     },
     created() {
