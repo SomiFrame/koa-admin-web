@@ -37,15 +37,12 @@ export default {
             imgPrecent: 0,
             videoUploading: false,
             videoPrecent: 0,
-            accessKeyId: 'AKIAIICLIZVMXPX5BZDA',
-            secretAccessKey: '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'
+            credentials: {}
         }
     },
     created() {
+        this.getCertification()
         let config = {
-            accessKeyId: this.accessKeyId,
-            secretAccessKey: this.secretAccessKey,
-            apiVersion: '2006-03-01',
             region: 'ap-northeast-1',
             signatureVersion:'v4',
         }
@@ -56,7 +53,7 @@ export default {
     methods:{
         uploadImage() {
             let file = this.$refs.imageFile.files[0]
-                let bucket = new aws.S3()
+            let bucket = new aws.S3()
             if(file) {
                 let params = {
                     Bucket: 'somi-test',
@@ -113,6 +110,15 @@ export default {
                         this.videoPrecent = Precent.toFixed(2)*100
                     })
             }
+        },
+        getCertification() {
+            this.axios.get('/certification').then(res=>{
+                console.log(res)
+                const {data,status} = res.data
+                if(!status){
+                    this.credentials = data
+                }
+            })
         },
         submit() {
             const {

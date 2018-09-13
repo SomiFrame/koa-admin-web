@@ -36,6 +36,7 @@ export default {
                 const {status,message} = res.data
                 if(!status) {
                     this.$message.success(message)
+                    this.$router.push('/login')
                 }else {
                     this.$message.error(message)
                 }
