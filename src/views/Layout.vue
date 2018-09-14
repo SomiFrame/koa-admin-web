@@ -18,6 +18,19 @@
                             </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
+                    <el-submenu index="3">
+                        <template slot="title">
+                            <span>TagManager</span>
+                        </template>
+                        <el-menu-item-group>
+                            <el-menu-item index="3-1">
+                                <router-link to="/tag/add">TagAdd</router-link>
+                            </el-menu-item>
+                            <el-menu-item index="3-2">
+                                <router-link to="/tag/list">TagList</router-link>
+                            </el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
                     <el-submenu index="2">
                         <template slot="title">
                             <span>UserManager</span>

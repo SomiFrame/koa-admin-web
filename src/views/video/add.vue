@@ -16,8 +16,9 @@
         <el-form-item label="video:">
             <div class="videoUploadContainer">
                 <input accept="video/*" ref="videoFile" type="file" />
+                <el-progress v-if="videoUploading" :color="`rgba(${videoPercent*2},${videoPercent*2}, ${videoPercent*2}, 0.7)`" :text-inside="true" :stroke-width="18" :percentage="videoPercent"></el-progress>
                 <el-button v-if="!videoUploading" @click="uploadVideo">upload</el-button>
-                <el-button v-if="videoUploading" icon="el-icon-loading">{{videoPrecent}}%</el-button>
+                <!--<el-button v-if="videoUploading" icon="el-icon-loading">{{videoPercent}}%</el-button>-->
             </div>
         </el-form-item>
         <el-form-item>
@@ -34,9 +35,9 @@ export default {
             videoObject: null,
             imgObject: null,
             imgUploading: false,
-            imgPrecent: 0,
+            imgPercent: 0,
             videoUploading: false,
-            videoPrecent: 0,
+            videoPercent: 0,
             credentials: {}
         }
     },
@@ -53,15 +54,18 @@ export default {
     methods:{
         uploadImage() {
             let file = this.$refs.imageFile.files[0]
-            let bucket = new aws.S3()
+            const {AccessKeyId:accessKeyId,SecretAccessKey:secretAccessKey,SessionToken:sessionToken} = this.credentials
+            let bucket = new aws.S3({
+                accessKeyId,
+                secretAccessKey,
+                sessionToken
+            })
             if(file) {
                 let params = {
                     Bucket: 'somi-test',
                     Key: `images/${file.name}`,
                     ContentType: file.type,
                     Body: file,
-                    'Access-Control-Allow-Credentials': '*',
-                    'ACL': 'public-read'
                 }
                 this.imgUploading = true
                 bucket.upload(params,(err,data)=>{
@@ -69,21 +73,25 @@ export default {
                     if(!err) {
                         this.imgObject = data
                         this.imgUploading = false
-                        this.imgPrecent = 0
+                        this.imgPercent = 0
                         this.$message.success("image upload successful")
                     }else {
                         this.$message.error("image upload failed")
                     }
                     }).on('httpUploadProgress',e=>{
-                        console.log('upload progress',e.loaded,e.total)
-                        let Precent = parseInt(e.loaded,10)/parseInt(e.total,10)
-                        this.imgPrecent = Precent.toFixed(2)*100
+                        let Percent = parseInt(e.loaded,10)/parseInt(e.total,10)
+                        this.imgPercent = Percent.toFixed(2)*100
                     })
             }
         },
         uploadVideo() {
             let file = this.$refs.videoFile.files[0]
-                let bucket = new aws.S3()
+            const {AccessKeyId:accessKeyId,SecretAccessKey:secretAccessKey,SessionToken:sessionToken} = this.credentials
+            let bucket = new aws.S3({
+                accessKeyId,
+                secretAccessKey,
+                sessionToken
+            })
             if(file) {
                 let params = {
                     Bucket: 'somi-test',
@@ -99,20 +107,20 @@ export default {
                     if(!err) {
                         this.videoObject = data
                         this.videoUploading = false
-                        this.videoPrecent = 0
+                        this.videoPercent = 0
                         this.$message.success("video upload successful")
                     }else {
                         this.$message.error("video upload failed")
                     }
                     }).on('httpUploadProgress',e=>{
                         console.log('upload progress',e.loaded,e.total)
-                        let Precent = parseInt(e.loaded,10)/parseInt(e.total,10)
-                        this.videoPrecent = Precent.toFixed(2)*100
+                        let Percent = parseInt(e.loaded,10)/parseInt(e.total,10)
+                        this.videoPercent = Percent.toFixed(2)*100
                     })
             }
         },
         getCertification() {
-            this.axios.get('/certification').then(res=>{
+            this.axios.get('/certification',{timeout:10000}).then(res=>{
                 console.log(res)
                 const {data,status} = res.data
                 if(!status){

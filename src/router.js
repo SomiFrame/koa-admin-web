@@ -7,6 +7,9 @@ import Register from '@page/Register.vue'
 import Video from '@page/video'
 import VideoList from '@page/video/list.vue'
 import VideoAdd from '@page/video/add.vue'
+import Tag from '@page/tag'
+import TagList from '@page/tag/list.vue'
+import TagAdd from '@page/tag/add.vue'
 
 Vue.use(Router)
 
@@ -44,6 +47,21 @@ export default new Router({
                     {
                         path: 'add',
                         component: VideoAdd
+                    }
+                ]
+            },
+            {
+                path:'tag',
+                name: 'tag',
+                component: Tag,
+                children: [
+                    {
+                        path: 'list',
+                        component: TagList
+                    },
+                    {
+                        path: 'add',
+                        component: TagAdd
                     }
                 ]
             }
