@@ -10,7 +10,7 @@
             <div class="imgUploadContainer">
                 <input accept="image/*" ref="imageFile" type="file" />
                 <el-button v-if="!imgUploading" @click="uploadImage">upload</el-button>
-                <el-button v-if="imgUploading" icon="el-icon-loading">{{imgPrecent}}%</el-button>
+                <el-button v-if="imgUploading" icon="el-icon-loading">{{imgPercent}}%</el-button>
             </div>
         </el-form-item>
         <el-form-item label="video:">
