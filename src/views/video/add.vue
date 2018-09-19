@@ -1,30 +1,43 @@
 <template>
-    <el-form :model="form">
-        <el-form-item label="title:">
-            <el-input v-model="form.title"></el-input>
-        </el-form-item>
-        <el-form-item label="description:">
-            <el-input type="textarea" v-model="form.description"></el-input>
-        </el-form-item>
-        <el-form-item label="thumbnail:">
-            <div class="imgUploadContainer">
-                <input accept="image/*" ref="imageFile" type="file" />
-                <el-button v-if="!imgUploading" @click="uploadImage">upload</el-button>
-                <el-button v-if="imgUploading" icon="el-icon-loading">{{imgPrecent}}%</el-button>
-            </div>
-        </el-form-item>
-        <el-form-item label="video:">
-            <div class="videoUploadContainer">
-                <input accept="video/*" ref="videoFile" type="file" />
-                <el-progress v-if="videoUploading" :color="`rgba(${videoPercent*2},${videoPercent*2}, ${videoPercent*2}, 0.7)`" :text-inside="true" :stroke-width="18" :percentage="videoPercent"></el-progress>
-                <el-button v-if="!videoUploading" @click="uploadVideo">upload</el-button>
-                <!--<el-button v-if="videoUploading" icon="el-icon-loading">{{videoPercent}}%</el-button>-->
-            </div>
-        </el-form-item>
-        <el-form-item>
-            <el-button @click="submit" class="submit" type="primary">submit</el-button>
-        </el-form-item>
-    </el-form>
+    <div class="page-container">
+        <el-form :model="form">
+            <el-form-item label="title:">
+                <el-input v-model="form.title"></el-input>
+            </el-form-item>
+            <el-form-item label="description:">
+                <el-input type="textarea" v-model="form.description"></el-input>
+            </el-form-item>
+            <el-form-item label="tags:">
+                <el-select v-model="form.tags" class="tagSelector" multiple filterable>
+                    <el-option
+                        v-for="(item,index) in tagOptions"
+                        :key="index"
+                        :label="item.name"
+                        :value="item._id"
+                    >
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="thumbnail:">
+                <div class="imgUploadContainer">
+                    <input accept="image/*" ref="imageFile" type="file" />
+                    <el-button v-if="!imgUploading" @click="uploadImage">upload</el-button>
+                    <el-button v-if="imgUploading" icon="el-icon-loading">{{imgPrecent}}%</el-button>
+                </div>
+            </el-form-item>
+            <el-form-item label="video:">
+                <div class="videoUploadContainer">
+                    <input accept="video/*" ref="videoFile" type="file" />
+                    <el-progress v-if="videoUploading" :color="`rgba(${videoPercent*2},${videoPercent*2}, ${videoPercent*2}, 0.7)`" :text-inside="true" :stroke-width="18" :percentage="videoPercent"></el-progress>
+                    <el-button v-if="!videoUploading" @click="uploadVideo">upload</el-button>
+                    <!--<el-button v-if="videoUploading" icon="el-icon-loading">{{videoPercent}}%</el-button>-->
+                </div>
+            </el-form-item>
+            <el-form-item>
+                <el-button @click="submit" class="submit" type="primary">submit</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
 </template>
 <script>
 import aws from "aws-sdk"
@@ -32,6 +45,7 @@ export default {
     data() {
         return {
             form:{},
+            tagOptions:[],
             videoObject: null,
             imgObject: null,
             imgUploading: false,
@@ -42,6 +56,7 @@ export default {
         }
     },
     created() {
+        this.getTags()
         this.getCertification()
         let config = {
             region: 'ap-northeast-1',
@@ -52,6 +67,12 @@ export default {
         })
     },
     methods:{
+        getTags() {
+            this.axios.get('/tags').then(res=>{
+                const {status,data} = res.data
+                this.tagOptions = data.data
+            })
+        },
         uploadImage() {
             let file = this.$refs.imageFile.files[0]
             const {AccessKeyId:accessKeyId,SecretAccessKey:secretAccessKey,SessionToken:sessionToken} = this.credentials
@@ -84,22 +105,34 @@ export default {
                     })
             }
         },
-        uploadVideo() {
-            let file = this.$refs.videoFile.files[0]
+        getBucket() {
             const {AccessKeyId:accessKeyId,SecretAccessKey:secretAccessKey,SessionToken:sessionToken} = this.credentials
             let bucket = new aws.S3({
                 accessKeyId,
                 secretAccessKey,
                 sessionToken
             })
+            return bucket
+        },
+        customUpload(){
+            let file = this.$refs.videoFile.files[0]
+            let bucket = this.getBucket()
+            bucket.createMultipartUpload({Bucket:'somi-test',Key:`videos/${file.name}`},(err,data)=>{
+                err&&console.log(err,err.stack)
+                err||console.log(data)
+            })
+        },
+        uploadVideo() {
+            this.customUpload()
+            return
+            let file = this.$refs.videoFile.files[0]
+            let bucket = this.getBucket()
             if(file) {
                 let params = {
                     Bucket: 'somi-test',
                     Key: `videos/${file.name}`,
                     ContentType: file.type,
-                    Body: file,
-                    'Access-Control-Allow-Credentials': '*',
-                    'ACL': 'public-read'
+                    Body: file
                 }
                 this.videoUploading = true
                 bucket.upload(params,(err,data)=>{
@@ -146,6 +179,11 @@ export default {
 }
 </script>
 <style lang="scss">
+.page-container {
+    form{
+        margin: auto;
+    }
+}
 [class*=UploadContainer]{
     width: 100%;
     display: inline-block;
@@ -154,6 +192,9 @@ export default {
 .el-form-item {
     border-bottom: 1px solid #ddd;
     padding-bottom: 20px;
+}
+.tagSelector{
+    width: 100%;
 }
 .submit{
     display: block;
