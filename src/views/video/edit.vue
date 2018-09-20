@@ -41,6 +41,13 @@
 </template>
 <script>
 import aws from "aws-sdk"
+let config = {
+    region: 'ap-northeast-1',
+    signatureVersion:'v4',
+}
+aws.config.update({
+    ...config
+})
 export default {
     data() {
         return {
@@ -56,17 +63,20 @@ export default {
         }
     },
     created() {
+        this.getVideo()
         this.getTags()
         this.getCertification()
-        let config = {
-            region: 'ap-northeast-1',
-            signatureVersion:'v4',
-        }
-        aws.config.update({
-            ...config
-        })
     },
     methods:{
+        getVideo() {
+            console.log(this.$route.params)
+            const {id} = this.$route.params
+            this.axios.get(`/videos/${id}`).then(res=>{
+                const {status,data} = res.data
+                console.log(data)
+                this.form = data
+            })
+        },
         getTags() {
             this.axios.get('/tags').then(res=>{
                 const {status,data} = res.data
@@ -90,10 +100,9 @@ export default {
                 }
                 this.imgUploading = true
                 bucket.upload(params,(err,data)=>{
+                    console.log(err,data)
                     if(!err) {
-                        console.log(data)
                         this.imgObject = data
-                        console.log(this.imgObject)
                         this.imgUploading = false
                         this.imgPercent = 0
                         this.$message.success("image upload successful")

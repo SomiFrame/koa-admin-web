@@ -7,6 +7,7 @@ import Register from '@page/Register.vue'
 import Video from '@page/video'
 import VideoList from '@page/video/list.vue'
 import VideoAdd from '@page/video/add.vue'
+import VideoEdit from '@page/video/edit.vue'
 import Tag from '@page/tag'
 import TagList from '@page/tag/list.vue'
 import TagAdd from '@page/tag/add.vue'
@@ -47,6 +48,10 @@ export default new Router({
                     {
                         path: 'add',
                         component: VideoAdd
+                    },
+                    {
+                        path: 'edit/:id',
+                        component: VideoEdit
                     }
                 ]
             },
