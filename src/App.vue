@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <router-view/>
+    <vue-particles color="#331994"></vue-particles>
   </div>
 </template>
 
@@ -15,5 +16,13 @@
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+#particles-js {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    left: 0;
+    top: 0;
 }
 </style>

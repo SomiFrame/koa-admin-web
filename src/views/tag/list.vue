@@ -4,7 +4,12 @@
             <el-table-column type="selection" width="55" align="center"></el-table-column>
             <el-table-column label="tag name" property="name" align="center"></el-table-column>
             <el-table-column label="created at" property="createdOn" align="center"></el-table-column>
-        </el-table>
+            <el-table-column label="Operations" align="center" fixed="right">
+                <template slot-scope="scope">
+                    <el-button type="danger" @click="remove(scope.row)">delete</el-button>
+                </template>
+            </el-table-column>
+            </el-table>
         <el-pagination
             @current-change="pageChange"
             :page-size="limit"
@@ -28,6 +33,13 @@ export default {
         this.getData()
     },
     methods:{
+        remove(row) {
+            this.axios.delete(`/tags/${row._id}`).then(res=>{
+                const {status,message} = res.data
+                status?this.$message.error(message):this.$message.success(message)
+                status||this.getData()
+            })
+        },
         converDate(val) {
             val.createdOn = new Date(val.createdOn).toLocaleString("zh-Hans-CN")
             return val
