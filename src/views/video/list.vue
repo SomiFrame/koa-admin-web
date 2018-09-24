@@ -41,7 +41,7 @@ export default{
         getVideos(){
             const {limit,page} = this
             this.axios.get('/videos',{params:{limit,page}}).then(res=>{
-                const {data,status} = res.data
+                const { data } = res.data
                 this.datas = data.data.map(val=>{
                     val.createdOn = new Date(val.createdOn).toLocaleString("zh-Hans-CN")
                     return val

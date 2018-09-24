@@ -69,7 +69,7 @@ export default {
     methods:{
         getTags() {
             this.axios.get('/tags').then(res=>{
-                const {status,data} = res.data
+                const {data} = res.data
                 this.tagOptions = data.data
             })
         },
@@ -124,8 +124,6 @@ export default {
             })
         },
         uploadVideo() {
-            this.customUpload()
-            return
             let file = this.$refs.videoFile.files[0]
             let bucket = this.getBucket()
             if(file) {

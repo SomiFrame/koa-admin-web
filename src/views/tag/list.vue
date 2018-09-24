@@ -51,7 +51,7 @@ export default {
         getData() {
             const {limit,page} = this
             this.axios.get('/tags',{params:{limit,page}}).then(res=>{
-                const {status,data} = res.data
+                const {data} = res.data
                 this.datas = data.data.map(this.converDate)
                 this.total = data.total
             })
