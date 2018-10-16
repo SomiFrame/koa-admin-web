@@ -51,6 +51,18 @@
   </div>
 </template>
 
+<script>
+import jsCookie from "js-cookie"
+export default {
+    data:()=>{
+         return {
+         }
+     },
+     created(){
+        jsCookie.get('token')||this.$router.push('login')
+     }
+}
+</script>
 <style lang="scss">
 .el-header {
     line-height: 60px;

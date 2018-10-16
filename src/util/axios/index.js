@@ -20,6 +20,11 @@ instance.interceptors.response.use(res=>{
     return res
 },err=>{
     console.log(err.response)
+    const {response:{status}} = err
+    if(status==401) {
+        location.href="/login"
+        jsCookie.remove('token')
+    }
     return Promise.reject(err)
 })
 export default instance
