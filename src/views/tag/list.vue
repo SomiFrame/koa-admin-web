@@ -6,6 +6,7 @@
             <el-table-column label="created at" property="createdOn" align="center"></el-table-column>
             <el-table-column label="Operations" align="center" fixed="right">
                 <template slot-scope="scope">
+                    <el-button type="primary" @click="edit(scope.row)">edit</el-button>
                     <el-button type="danger" @click="remove(scope.row)">delete</el-button>
                 </template>
             </el-table-column>
@@ -39,6 +40,9 @@ export default {
                 status?this.$message.error(message):this.$message.success(message)
                 status||this.getData()
             })
+        },
+        edit(row) {
+            this.$router.push(`/tag/edit/${row._id}`)
         },
         converDate(val) {
             val.createdOn = new Date(val.createdOn).toLocaleString("zh-Hans-CN")

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # koa-admin-front
 
 ## Project setup

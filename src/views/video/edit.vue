@@ -73,13 +73,14 @@ export default {
             const {id} = this.$route.params
             this.axios.get(`/videos/${id}`).then(res=>{
                 const {status,data} = res.data
-                console.log(data)
+                console.log(data,status)
                 this.form = data
             })
         },
         getTags() {
             this.axios.get('/tags').then(res=>{
                 const {status,data} = res.data
+                console.log(status)
                 this.tagOptions = data.data
             })
         },
@@ -133,8 +134,6 @@ export default {
             })
         },
         uploadVideo() {
-            this.customUpload()
-            return
             let file = this.$refs.videoFile.files[0]
             let bucket = this.getBucket()
             if(file) {
@@ -172,12 +171,13 @@ export default {
             })
         },
         submit() {
+            const {id} = this.$route.params
             const {
                 form,
                 videoObject,
                 imgObject
             } = this
-            this.axios.post('/videos',{
+            this.axios.put(`/videos/${id}`,{
                 ...form,
                 video: videoObject,
                 image: imgObject

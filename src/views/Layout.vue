@@ -1,7 +1,9 @@
 <template>
   <div class="layout-contaier">
     <el-container>
-        <el-header>header</el-header>
+        <el-header class="el-button--primary">
+            <ThemePicker />
+        </el-header>
         <el-container>
             <el-aside width="200px">
                 <el-menu>
@@ -53,6 +55,7 @@
 
 <script>
 import jsCookie from "js-cookie"
+import ThemePicker from "@/components/ThemePicker.vue"
 export default {
     data:()=>{
          return {
@@ -60,7 +63,10 @@ export default {
      },
      created(){
         jsCookie.get('token')||this.$router.push('login')
-     }
+     },
+    components:{
+        ThemePicker
+    }
 }
 </script>
 <style lang="scss">

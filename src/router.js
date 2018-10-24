@@ -11,6 +11,7 @@ import VideoEdit from '@page/video/edit.vue'
 import Tag from '@page/tag'
 import TagList from '@page/tag/list.vue'
 import TagAdd from '@page/tag/add.vue'
+import TagEdit from '@page/tag/edit.vue'
 
 Vue.use(Router)
 
@@ -67,6 +68,10 @@ export default new Router({
                     {
                         path: 'add',
                         component: TagAdd
+                    },
+                    {
+                        path: 'edit/:id',
+                        component: TagEdit
                     }
                 ]
             }

@@ -1,11 +1,11 @@
 <template>
     <center>
-        <el-form>
+        <el-form @submit.native.prevent>
             <el-form-item label="email" prop="email">
                 <el-input type="email" v-model="form.email"></el-input>
             </el-form-item>
             <el-form-item label="password" prop="password">
-                <el-input type="password" v-model="form.password"></el-input>
+                <el-input type="password" v-model="form.password" @keyup.enter.native="login"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button @click="login" type="primary">
@@ -28,6 +28,7 @@ export default {
     },
     methods:{
         login() {
+            console.log('submit')
             this.axios.post(`/login`,{...this.form}).then(res=>{
                 console.log(res)
                 const {status,message,data} = res.data
