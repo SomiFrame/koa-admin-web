@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Layout from '@page/Layout.vue'
 import Home from '@page/Home.vue'
 import Login from '@page/Login.vue'
-import Register from '@page/Register.vue'
+//import Register from '@page/Register.vue'
 import Video from '@page/video'
 import VideoList from '@page/video/list.vue'
 import VideoAdd from '@page/video/add.vue'
@@ -82,10 +82,10 @@ export default new Router({
         name: 'login',
         component: Login
     },
-    {
-        path: '/register',
-        name: 'register',
-        component: Register
-    }
+    //{
+    //    path: '/register',
+    //    name: 'register',
+    //    component: Register
+    //}
   ]
 })
